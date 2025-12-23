@@ -4,32 +4,37 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a **Claude Code plugin** that provides SEO and WCAG 2.1 AA accessibility analysis skills. The plugin teaches Claude how to analyze HTML/JSX/TSX files for accessibility and SEO issues.
+This is a **Claude Code plugin** that provides SEO and WCAG 2.1 AA accessibility analysis tools for HTML/JSX/TSX files. The plugin includes automated linting, WCAG/ARIA reference lookup, and a command-driven audit workflow with subagent support.
 
 ## Architecture
 
 ```
 seo-claude-plugins/
-├── plugin.json                    # Plugin manifest (v2.0.0, declares 2 skills)
+├── plugin.json                    # Plugin manifest (v2.3.0)
 ├── skills/
-│   ├── seo-a11y-analyzer/        # Core analysis skill
-│   │   ├── SKILL.md              # 5-step analysis workflow
-│   │   ├── reference/            # Progressive disclosure docs
-│   │   │   ├── color-contrast.md # Common color combinations
-│   │   │   ├── seo-checks.md     # 30-item SEO checklist
-│   │   │   ├── wcag-quick-ref.md # WCAG criteria reference
-│   │   │   └── examples.md       # Audit examples
-│   │   └── scripts/
-│   │       └── validate-with-axe.sh  # axe-core CLI wrapper
-│   └── wcag-aria-lookup/         # Lookup-based reference skill
-│       ├── SKILL.md              # Lookup workflow definition
-│       ├── wcag-index.json       # WCAG 2.1 Level A+AA (50 criteria)
-│       └── aria-index.json       # ARIA roles/attributes/patterns
+│   ├── seo-a11y-analyzer/        # Core analysis skill (5-step workflow)
+│   ├── wcag-aria-lookup/         # Lookup-based WCAG/ARIA reference
+│   │   ├── SKILL.md
+│   │   ├── wcag-index.json       # 50 WCAG 2.1 Level A+AA criteria
+│   │   └── aria-index.json       # 24 roles, 28 attributes, 12 patterns
+│   ├── html-lint-runner/         # Automated linting with axe-core + markuplint
+│   │   ├── SKILL.md
+│   │   ├── scripts/
+│   │   │   ├── lint-html.sh      # Combined lint (JSON output)
+│   │   │   └── run-markuplint.sh # Standalone markuplint
+│   │   └── configs/
+│   │       └── markuplintrc.json # JSX/TSX parser config
+│   └── a11y-self-check/          # Proactive self-validation for Claude Code
+│       └── SKILL.md
+├── commands/
+│   └── a11y-audit.md             # /a11y-audit command (suggestion-only)
+├── agents/
+│   └── a11y-fixer.md             # Subagent for analysis (read-only)
 ├── test/fixtures/                # Test HTML files with intentional issues
 └── plans/                        # Development planning docs
 ```
 
-## The Two Skills
+## The Four Skills
 
 ### 1. seo-a11y-analyzer
 Workflow-based analysis skill with 5-step process:
@@ -55,9 +60,57 @@ Lookup-based reference skill that searches JSON indexes and returns:
 - ARIA attributes: 28
 - ARIA patterns: 12
 
+### 3. html-lint-runner
+Automated linting using axe-core and markuplint CLI tools.
+
+**Features**:
+- Combined lint script outputs JSON with violations and problems
+- JSX/TSX support via @markuplint/jsx-parser
+- Graceful error handling when ChromeDriver unavailable
+
+**Usage**:
+```bash
+bash ${CLAUDE_PLUGIN_ROOT}/skills/html-lint-runner/scripts/lint-html.sh <file>
+```
+
+### 4. a11y-self-check
+Proactive self-validation skill for Claude Code to validate its own generated HTML/JSX/TSX output before presenting to users.
+
+**When to use**:
+- Generating new UI components
+- Writing forms, modals, navigation
+- Modifying existing templates
+
+## Command & Agent
+
+### /a11y-audit Command
+Runs accessibility audit on specified files and provides fix **suggestions** (does NOT modify files).
+
+```bash
+/a11y-audit path/to/file.html
+/a11y-audit "src/**/*.tsx"
+```
+
+### a11y-fixer Agent
+Read-only subagent that:
+- ✅ Runs lint tools
+- ✅ Analyzes results
+- ✅ Suggests fixes with code examples
+- ❌ Does NOT modify files
+
 ## Development Commands
 
-### Validate with axe-core
+### Run Combined Lint (Recommended)
+
+```bash
+# Combined axe-core + markuplint (JSON output)
+bash skills/html-lint-runner/scripts/lint-html.sh path/to/file.html
+
+# For JSX/TSX files
+bash skills/html-lint-runner/scripts/lint-html.sh path/to/Component.tsx
+```
+
+### Validate with axe-core Only
 
 ```bash
 # Single file
@@ -65,11 +118,6 @@ Lookup-based reference skill that searches JSON indexes and returns:
 
 # Or directly with npx
 npx @axe-core/cli file.html --tags wcag21aa
-
-# Test all fixtures
-for f in test/fixtures/*.html; do
-  ./skills/seo-a11y-analyzer/scripts/validate-with-axe.sh "$f"
-done
 ```
 
 ### Test Lookup Skill
