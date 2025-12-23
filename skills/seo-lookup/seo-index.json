@@ -1,0 +1,437 @@
+{
+  "version": "1.0",
+  "meta-tags": {
+    "title": {
+      "element": "<title>",
+      "summary": "The page title displayed in browser tabs and search engine results. Critical for SEO and click-through rates.",
+      "keywords": ["title", "page title", "title tag", "タイトル", "ページタイトル", "タイトルタグ"],
+      "requirements": [
+        "Unique for each page",
+        "50-60 characters recommended (Google displays ~60 characters)",
+        "Primary keyword near the beginning",
+        "Brand name at the end (optional)",
+        "Avoid keyword stuffing"
+      ],
+      "validation": {
+        "minLength": 30,
+        "maxLength": 60,
+        "required": true
+      },
+      "example": "<title>Best Coffee Shops in Tokyo - Your Brand</title>",
+      "url": "https://developers.google.com/search/docs/appearance/title-link"
+    },
+    "description": {
+      "element": "<meta name=\"description\">",
+      "summary": "A brief summary of the page content shown in search results. Influences click-through rate but not ranking directly.",
+      "keywords": ["description", "meta description", "ディスクリプション", "メタディスクリプション", "概要"],
+      "requirements": [
+        "150-160 characters recommended",
+        "Include primary keywords naturally",
+        "Compelling and action-oriented",
+        "Unique for each page",
+        "No duplicate content across pages"
+      ],
+      "validation": {
+        "minLength": 70,
+        "maxLength": 160,
+        "required": true
+      },
+      "example": "<meta name=\"description\" content=\"Discover the top 10 coffee shops in Tokyo with our comprehensive guide. Find unique brews, cozy atmospheres, and expert recommendations.\">",
+      "url": "https://developers.google.com/search/docs/appearance/snippet"
+    },
+    "canonical": {
+      "element": "<link rel=\"canonical\">",
+      "summary": "Specifies the preferred URL for a page, preventing duplicate content issues when the same content is accessible via multiple URLs.",
+      "keywords": ["canonical", "canonical URL", "rel canonical", "カノニカル", "正規URL", "重複コンテンツ"],
+      "requirements": [
+        "Use absolute URLs",
+        "Include on every page",
+        "Self-referencing canonicals are recommended",
+        "Cross-domain canonicals supported",
+        "HTTPS preferred over HTTP"
+      ],
+      "validation": {
+        "format": "absolute URL",
+        "required": true
+      },
+      "example": "<link rel=\"canonical\" href=\"https://example.com/page\">",
+      "url": "https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls"
+    },
+    "robots": {
+      "element": "<meta name=\"robots\">",
+      "summary": "Controls how search engines crawl and index the page. Default behavior allows indexing and following links.",
+      "keywords": ["robots", "noindex", "nofollow", "meta robots", "ロボット", "インデックス", "クロール"],
+      "requirements": [
+        "Omit if default behavior is desired",
+        "Use 'noindex' to prevent indexing",
+        "Use 'nofollow' to prevent link following",
+        "Multiple directives comma-separated",
+        "Consider robots.txt for site-wide rules"
+      ],
+      "directives": {
+        "index": "Allow page to be indexed (default)",
+        "noindex": "Prevent page from being indexed",
+        "follow": "Follow links on the page (default)",
+        "nofollow": "Don't follow any links on the page",
+        "noarchive": "Don't show cached copy in results",
+        "nosnippet": "Don't show text snippet or video preview",
+        "max-snippet": "Limit snippet length (e.g., max-snippet:150)",
+        "max-image-preview": "Max size of image preview (none, standard, large)",
+        "max-video-preview": "Max seconds for video preview"
+      },
+      "validation": {
+        "required": false
+      },
+      "example": "<meta name=\"robots\" content=\"noindex, nofollow\">",
+      "url": "https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag"
+    },
+    "viewport": {
+      "element": "<meta name=\"viewport\">",
+      "summary": "Controls the viewport's size and scale on mobile devices. Essential for mobile-friendly pages.",
+      "keywords": ["viewport", "mobile", "responsive", "ビューポート", "モバイル", "レスポンシブ"],
+      "requirements": [
+        "Required for mobile-friendly sites",
+        "width=device-width for responsive design",
+        "initial-scale=1.0 recommended",
+        "Avoid user-scalable=no for accessibility"
+      ],
+      "validation": {
+        "required": true
+      },
+      "example": "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag"
+    },
+    "charset": {
+      "element": "<meta charset>",
+      "summary": "Declares the character encoding for the HTML document. Should be UTF-8 for modern web pages.",
+      "keywords": ["charset", "encoding", "UTF-8", "文字コード", "エンコーディング"],
+      "requirements": [
+        "Use UTF-8 for all pages",
+        "Must be within first 1024 bytes of document",
+        "Place before any content elements"
+      ],
+      "validation": {
+        "value": "UTF-8",
+        "required": true
+      },
+      "example": "<meta charset=\"UTF-8\">",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta#charset"
+    }
+  },
+  "og-tags": {
+    "og:title": {
+      "attribute": "property",
+      "summary": "The title shown when shared on social platforms. Can differ from the HTML title for social optimization.",
+      "keywords": ["og:title", "open graph title", "OGタイトル", "ソーシャルタイトル"],
+      "requirements": [
+        "60-90 characters recommended",
+        "Compelling and shareable",
+        "Can include emojis for engagement",
+        "No brand name if space is limited"
+      ],
+      "validation": {
+        "maxLength": 95,
+        "required": true
+      },
+      "example": "<meta property=\"og:title\" content=\"10 Amazing Coffee Shops You Must Visit in Tokyo\">",
+      "url": "https://ogp.me/"
+    },
+    "og:description": {
+      "attribute": "property",
+      "summary": "The description shown in social media shares. Should be engaging and encourage clicks.",
+      "keywords": ["og:description", "open graph description", "OG説明", "ソーシャル説明"],
+      "requirements": [
+        "2-4 sentences recommended",
+        "200 characters optimal",
+        "Include call-to-action",
+        "Avoid duplicating meta description exactly"
+      ],
+      "validation": {
+        "maxLength": 300,
+        "required": true
+      },
+      "example": "<meta property=\"og:description\" content=\"Explore Tokyo's hidden coffee gems. From traditional kissaten to modern specialty shops, find your perfect brew today.\">",
+      "url": "https://ogp.me/"
+    },
+    "og:image": {
+      "attribute": "property",
+      "summary": "The image displayed when the page is shared on social media. Critical for engagement.",
+      "keywords": ["og:image", "open graph image", "OG画像", "ソーシャル画像", "シェア画像"],
+      "requirements": [
+        "Minimum 1200x630 pixels (1.91:1 ratio)",
+        "Maximum file size: 8MB",
+        "Use absolute URLs",
+        "HTTPS required for Facebook",
+        "JPG or PNG format recommended"
+      ],
+      "validation": {
+        "minWidth": 1200,
+        "minHeight": 630,
+        "format": ["jpg", "jpeg", "png", "gif", "webp"],
+        "required": true
+      },
+      "example": "<meta property=\"og:image\" content=\"https://example.com/images/og-image.jpg\">",
+      "related": ["og:image:width", "og:image:height", "og:image:alt"],
+      "url": "https://developers.facebook.com/docs/sharing/webmasters/images/"
+    },
+    "og:image:width": {
+      "attribute": "property",
+      "summary": "The width of the og:image in pixels. Helps platforms render images correctly before loading.",
+      "keywords": ["og:image:width", "image width", "画像幅"],
+      "requirements": [
+        "Specify in pixels",
+        "Should match actual image dimensions"
+      ],
+      "example": "<meta property=\"og:image:width\" content=\"1200\">",
+      "url": "https://ogp.me/"
+    },
+    "og:image:height": {
+      "attribute": "property",
+      "summary": "The height of the og:image in pixels.",
+      "keywords": ["og:image:height", "image height", "画像高さ"],
+      "requirements": [
+        "Specify in pixels",
+        "Should match actual image dimensions"
+      ],
+      "example": "<meta property=\"og:image:height\" content=\"630\">",
+      "url": "https://ogp.me/"
+    },
+    "og:image:alt": {
+      "attribute": "property",
+      "summary": "Alternative text for the og:image. Important for accessibility.",
+      "keywords": ["og:image:alt", "image alt", "画像代替テキスト"],
+      "requirements": [
+        "Describe the image content",
+        "Keep under 125 characters"
+      ],
+      "example": "<meta property=\"og:image:alt\" content=\"Cozy interior of a Tokyo coffee shop with wooden furniture and warm lighting\">",
+      "url": "https://ogp.me/"
+    },
+    "og:url": {
+      "attribute": "property",
+      "summary": "The canonical URL for the shared content. Should match the canonical link element.",
+      "keywords": ["og:url", "open graph url", "OG URL", "ソーシャルURL"],
+      "requirements": [
+        "Use absolute URLs",
+        "Should match rel=canonical",
+        "Exclude tracking parameters"
+      ],
+      "validation": {
+        "format": "absolute URL",
+        "required": true
+      },
+      "example": "<meta property=\"og:url\" content=\"https://example.com/coffee-shops-tokyo\">",
+      "url": "https://ogp.me/"
+    },
+    "og:type": {
+      "attribute": "property",
+      "summary": "The type of content being shared. Determines how content is displayed on social platforms.",
+      "keywords": ["og:type", "open graph type", "OGタイプ", "コンテンツタイプ"],
+      "requirements": [
+        "Use 'website' for homepage",
+        "Use 'article' for blog posts/news",
+        "Use 'product' for e-commerce",
+        "Use 'video.other' for videos"
+      ],
+      "types": {
+        "website": "General website pages",
+        "article": "Blog posts, news articles",
+        "product": "E-commerce product pages",
+        "video.other": "Video content",
+        "music.song": "Music tracks",
+        "book": "Books"
+      },
+      "validation": {
+        "required": true
+      },
+      "example": "<meta property=\"og:type\" content=\"article\">",
+      "url": "https://ogp.me/#types"
+    },
+    "og:site_name": {
+      "attribute": "property",
+      "summary": "The name of the overall website. Displayed alongside the title in some social shares.",
+      "keywords": ["og:site_name", "site name", "サイト名"],
+      "requirements": [
+        "Use consistent brand name",
+        "Keep it short"
+      ],
+      "example": "<meta property=\"og:site_name\" content=\"Your Brand Name\">",
+      "url": "https://ogp.me/"
+    },
+    "og:locale": {
+      "attribute": "property",
+      "summary": "The locale of the content in the format language_TERRITORY.",
+      "keywords": ["og:locale", "locale", "ロケール", "言語設定"],
+      "requirements": [
+        "Format: language_TERRITORY (e.g., en_US, ja_JP)",
+        "Default is en_US"
+      ],
+      "example": "<meta property=\"og:locale\" content=\"ja_JP\">",
+      "url": "https://ogp.me/"
+    }
+  },
+  "twitter-cards": {
+    "twitter:card": {
+      "attribute": "name",
+      "summary": "Specifies the type of Twitter Card to use when the page is shared.",
+      "keywords": ["twitter:card", "twitter card", "Twitterカード", "ツイッターカード"],
+      "requirements": [
+        "Required for Twitter Cards",
+        "Choose based on content type"
+      ],
+      "types": {
+        "summary": "Default card with small image",
+        "summary_large_image": "Card with large image above title",
+        "player": "Card with audio/video player",
+        "app": "Card for mobile app downloads"
+      },
+      "validation": {
+        "required": true
+      },
+      "example": "<meta name=\"twitter:card\" content=\"summary_large_image\">",
+      "url": "https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards"
+    },
+    "twitter:title": {
+      "attribute": "name",
+      "summary": "The title for the Twitter Card. Falls back to og:title if not specified.",
+      "keywords": ["twitter:title", "twitter title", "Twitterタイトル"],
+      "requirements": [
+        "Maximum 70 characters",
+        "Will be truncated if longer",
+        "Falls back to og:title"
+      ],
+      "validation": {
+        "maxLength": 70
+      },
+      "example": "<meta name=\"twitter:title\" content=\"10 Amazing Coffee Shops in Tokyo\">",
+      "url": "https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/markup"
+    },
+    "twitter:description": {
+      "attribute": "name",
+      "summary": "The description for the Twitter Card. Falls back to og:description if not specified.",
+      "keywords": ["twitter:description", "twitter description", "Twitter説明"],
+      "requirements": [
+        "Maximum 200 characters",
+        "Falls back to og:description"
+      ],
+      "validation": {
+        "maxLength": 200
+      },
+      "example": "<meta name=\"twitter:description\" content=\"Explore Tokyo's best coffee shops from traditional kissaten to modern specialty roasters.\">",
+      "url": "https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/markup"
+    },
+    "twitter:image": {
+      "attribute": "name",
+      "summary": "The image URL for the Twitter Card. Falls back to og:image if not specified.",
+      "keywords": ["twitter:image", "twitter image", "Twitter画像"],
+      "requirements": [
+        "Minimum 144x144 pixels (summary)",
+        "Minimum 300x157 pixels (summary_large_image)",
+        "Maximum 4096x4096 pixels",
+        "Maximum 5MB file size",
+        "JPG, PNG, GIF, WEBP supported"
+      ],
+      "validation": {
+        "summaryMinSize": "144x144",
+        "largeImageMinSize": "300x157",
+        "maxSize": "4096x4096"
+      },
+      "example": "<meta name=\"twitter:image\" content=\"https://example.com/images/twitter-card.jpg\">",
+      "url": "https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/markup"
+    },
+    "twitter:image:alt": {
+      "attribute": "name",
+      "summary": "Alternative text for the Twitter Card image for accessibility.",
+      "keywords": ["twitter:image:alt", "twitter image alt", "Twitter画像alt"],
+      "requirements": [
+        "Maximum 420 characters",
+        "Required for accessibility"
+      ],
+      "validation": {
+        "maxLength": 420
+      },
+      "example": "<meta name=\"twitter:image:alt\" content=\"Interior of a cozy Tokyo coffee shop\">",
+      "url": "https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/markup"
+    },
+    "twitter:site": {
+      "attribute": "name",
+      "summary": "The Twitter @username of the website owner.",
+      "keywords": ["twitter:site", "twitter site", "Twitterサイト"],
+      "requirements": [
+        "Include @ symbol",
+        "Must be a valid Twitter username"
+      ],
+      "example": "<meta name=\"twitter:site\" content=\"@yourbrand\">",
+      "url": "https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/markup"
+    },
+    "twitter:creator": {
+      "attribute": "name",
+      "summary": "The Twitter @username of the content creator.",
+      "keywords": ["twitter:creator", "twitter creator", "Twitter作成者"],
+      "requirements": [
+        "Include @ symbol",
+        "Used for attribution"
+      ],
+      "example": "<meta name=\"twitter:creator\" content=\"@authorname\">",
+      "url": "https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/markup"
+    }
+  },
+  "technical": {
+    "hreflang": {
+      "element": "<link rel=\"alternate\" hreflang>",
+      "summary": "Indicates language and geographic targeting for a page. Used for international SEO.",
+      "keywords": ["hreflang", "international SEO", "multilingual", "多言語", "国際化", "言語ターゲティング"],
+      "requirements": [
+        "Use ISO 639-1 language codes",
+        "Optional: ISO 3166-1 Alpha-2 country codes",
+        "Include x-default for fallback",
+        "All pages in set must reference each other",
+        "Use absolute URLs"
+      ],
+      "formats": {
+        "language": "en, ja, de, fr",
+        "languageCountry": "en-US, en-GB, ja-JP",
+        "default": "x-default"
+      },
+      "example": "<link rel=\"alternate\" hreflang=\"ja\" href=\"https://example.com/ja/page\">\n<link rel=\"alternate\" hreflang=\"en\" href=\"https://example.com/en/page\">\n<link rel=\"alternate\" hreflang=\"x-default\" href=\"https://example.com/page\">",
+      "url": "https://developers.google.com/search/docs/specialty/international/localized-versions"
+    },
+    "lang": {
+      "element": "<html lang>",
+      "summary": "Declares the primary language of the page content. Essential for accessibility and SEO.",
+      "keywords": ["lang", "language", "html lang", "言語", "lang属性"],
+      "requirements": [
+        "Required on html element",
+        "Use ISO 639-1 codes (en, ja, de)",
+        "Can include region (en-US, ja-JP)",
+        "Affects screen reader pronunciation"
+      ],
+      "example": "<html lang=\"ja\">",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/lang"
+    },
+    "alternate-rss": {
+      "element": "<link rel=\"alternate\" type=\"application/rss+xml\">",
+      "summary": "Points to an RSS feed for the site or page.",
+      "keywords": ["rss", "feed", "alternate", "RSSフィード"],
+      "requirements": [
+        "Include title attribute",
+        "Use absolute URL"
+      ],
+      "example": "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"Blog RSS Feed\" href=\"https://example.com/feed.xml\">",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/link#providing_alternative_stylesheets"
+    },
+    "prev-next": {
+      "element": "<link rel=\"prev/next\">",
+      "summary": "Indicates pagination relationships for paginated content series.",
+      "keywords": ["prev", "next", "pagination", "ページネーション", "前後"],
+      "requirements": [
+        "Use on paginated content",
+        "First page has only next",
+        "Last page has only prev"
+      ],
+      "note": "Google no longer uses these for indexing but they aid user experience.",
+      "example": "<link rel=\"prev\" href=\"https://example.com/page/1\">\n<link rel=\"next\" href=\"https://example.com/page/3\">",
+      "url": "https://developers.google.com/search/blog/2019/09/evolving-nofollow-new-ways-to-identify"
+    }
+  }
+}

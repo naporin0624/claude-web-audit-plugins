@@ -1,0 +1,624 @@
+{
+  "version": "1.0",
+  "schemas": {
+    "Article": {
+      "type": "Article",
+      "summary": "Schema for news articles, blog posts, and editorial content. Enables enhanced search results with rich snippets.",
+      "keywords": ["article", "blog", "news", "post", "記事", "ブログ", "ニュース"],
+      "subtypes": ["NewsArticle", "BlogPosting", "TechArticle"],
+      "requiredProperties": [
+        "@type",
+        "headline",
+        "author",
+        "datePublished"
+      ],
+      "recommendedProperties": [
+        "image",
+        "dateModified",
+        "publisher",
+        "description",
+        "mainEntityOfPage"
+      ],
+      "propertyDetails": {
+        "headline": {
+          "type": "Text",
+          "description": "The headline of the article. Should be under 110 characters.",
+          "maxLength": 110
+        },
+        "author": {
+          "type": "Person or Organization",
+          "description": "The author of the article. Include name and optionally url."
+        },
+        "datePublished": {
+          "type": "DateTime",
+          "description": "The date the article was first published. Use ISO 8601 format."
+        },
+        "dateModified": {
+          "type": "DateTime",
+          "description": "The date the article was last modified."
+        },
+        "image": {
+          "type": "ImageObject or URL",
+          "description": "The representative image. Multiple images recommended (1200px wide)."
+        },
+        "publisher": {
+          "type": "Organization",
+          "description": "The organization publishing the article. Include name and logo."
+        }
+      },
+      "example": {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "How to Make Perfect Pour-Over Coffee",
+        "author": {
+          "@type": "Person",
+          "name": "Coffee Expert",
+          "url": "https://example.com/author/coffee-expert"
+        },
+        "datePublished": "2024-01-15T09:00:00+09:00",
+        "dateModified": "2024-01-16T10:00:00+09:00",
+        "image": [
+          "https://example.com/images/pour-over-1x1.jpg",
+          "https://example.com/images/pour-over-4x3.jpg",
+          "https://example.com/images/pour-over-16x9.jpg"
+        ],
+        "publisher": {
+          "@type": "Organization",
+          "name": "Coffee Blog",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://example.com/logo.png"
+          }
+        }
+      },
+      "url": "https://developers.google.com/search/docs/appearance/structured-data/article",
+      "testUrl": "https://search.google.com/test/rich-results"
+    },
+    "Product": {
+      "type": "Product",
+      "summary": "Schema for e-commerce product pages. Enables rich results with price, availability, and reviews.",
+      "keywords": ["product", "e-commerce", "shop", "buy", "商品", "製品", "EC", "ショップ"],
+      "requiredProperties": [
+        "@type",
+        "name"
+      ],
+      "recommendedProperties": [
+        "image",
+        "description",
+        "offers",
+        "aggregateRating",
+        "review",
+        "sku",
+        "brand"
+      ],
+      "propertyDetails": {
+        "name": {
+          "type": "Text",
+          "description": "The name of the product."
+        },
+        "image": {
+          "type": "ImageObject or URL",
+          "description": "Product images. Multiple images recommended."
+        },
+        "offers": {
+          "type": "Offer",
+          "description": "Pricing and availability information.",
+          "requiredProperties": ["price", "priceCurrency", "availability"]
+        },
+        "aggregateRating": {
+          "type": "AggregateRating",
+          "description": "Overall rating based on multiple reviews."
+        },
+        "brand": {
+          "type": "Brand",
+          "description": "The brand of the product."
+        },
+        "sku": {
+          "type": "Text",
+          "description": "Stock Keeping Unit identifier."
+        }
+      },
+      "availabilityValues": {
+        "InStock": "https://schema.org/InStock",
+        "OutOfStock": "https://schema.org/OutOfStock",
+        "PreOrder": "https://schema.org/PreOrder",
+        "BackOrder": "https://schema.org/BackOrder",
+        "Discontinued": "https://schema.org/Discontinued"
+      },
+      "example": {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "Premium Coffee Grinder",
+        "image": "https://example.com/grinder.jpg",
+        "description": "Professional-grade burr grinder for the perfect grind.",
+        "brand": {
+          "@type": "Brand",
+          "name": "CoffeePro"
+        },
+        "sku": "GRIND-001",
+        "offers": {
+          "@type": "Offer",
+          "price": "299.00",
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock",
+          "url": "https://example.com/grinder"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.5",
+          "reviewCount": "89"
+        }
+      },
+      "url": "https://developers.google.com/search/docs/appearance/structured-data/product",
+      "testUrl": "https://search.google.com/test/rich-results"
+    },
+    "Organization": {
+      "type": "Organization",
+      "summary": "Schema for organizations, companies, and brands. Helps establish brand presence in search.",
+      "keywords": ["organization", "company", "brand", "business", "会社", "組織", "ブランド"],
+      "requiredProperties": [
+        "@type",
+        "name",
+        "url"
+      ],
+      "recommendedProperties": [
+        "logo",
+        "sameAs",
+        "contactPoint",
+        "description",
+        "foundingDate",
+        "address"
+      ],
+      "propertyDetails": {
+        "name": {
+          "type": "Text",
+          "description": "The official name of the organization."
+        },
+        "url": {
+          "type": "URL",
+          "description": "The official website URL."
+        },
+        "logo": {
+          "type": "ImageObject or URL",
+          "description": "The official logo. Minimum 112x112 pixels, 1:1 or 4:3 ratio."
+        },
+        "sameAs": {
+          "type": "URL array",
+          "description": "Links to official social media profiles."
+        },
+        "contactPoint": {
+          "type": "ContactPoint",
+          "description": "Contact information for customer service."
+        }
+      },
+      "example": {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Example Company",
+        "url": "https://example.com",
+        "logo": "https://example.com/logo.png",
+        "sameAs": [
+          "https://twitter.com/example",
+          "https://www.facebook.com/example",
+          "https://www.linkedin.com/company/example"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+1-800-555-0123",
+          "contactType": "customer service"
+        }
+      },
+      "url": "https://developers.google.com/search/docs/appearance/structured-data/logo",
+      "testUrl": "https://search.google.com/test/rich-results"
+    },
+    "LocalBusiness": {
+      "type": "LocalBusiness",
+      "summary": "Schema for local businesses with physical locations. Enables local search features.",
+      "keywords": ["local business", "store", "shop", "restaurant", "店舗", "ローカルビジネス", "実店舗"],
+      "subtypes": ["Restaurant", "Store", "MedicalBusiness", "LegalService", "FinancialService"],
+      "requiredProperties": [
+        "@type",
+        "name",
+        "address"
+      ],
+      "recommendedProperties": [
+        "image",
+        "telephone",
+        "openingHoursSpecification",
+        "geo",
+        "priceRange",
+        "aggregateRating",
+        "review"
+      ],
+      "propertyDetails": {
+        "name": {
+          "type": "Text",
+          "description": "The name of the business."
+        },
+        "address": {
+          "type": "PostalAddress",
+          "description": "The physical address of the business."
+        },
+        "geo": {
+          "type": "GeoCoordinates",
+          "description": "The latitude and longitude of the business."
+        },
+        "openingHoursSpecification": {
+          "type": "OpeningHoursSpecification array",
+          "description": "Business hours for each day of the week."
+        },
+        "priceRange": {
+          "type": "Text",
+          "description": "Price range indicator (e.g., $, $$, $$$, $$$$)."
+        }
+      },
+      "example": {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "name": "Tokyo Coffee House",
+        "image": "https://example.com/coffee-house.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "1-2-3 Shibuya",
+          "addressLocality": "Shibuya-ku",
+          "addressRegion": "Tokyo",
+          "postalCode": "150-0001",
+          "addressCountry": "JP"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 35.6580,
+          "longitude": 139.7016
+        },
+        "telephone": "+81-3-1234-5678",
+        "priceRange": "$$",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "08:00",
+            "closes": "20:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Saturday", "Sunday"],
+            "opens": "09:00",
+            "closes": "18:00"
+          }
+        ]
+      },
+      "url": "https://developers.google.com/search/docs/appearance/structured-data/local-business",
+      "testUrl": "https://search.google.com/test/rich-results"
+    },
+    "FAQPage": {
+      "type": "FAQPage",
+      "summary": "Schema for FAQ pages with expandable question-answer pairs in search results.",
+      "keywords": ["faq", "questions", "answers", "よくある質問", "FAQ", "Q&A"],
+      "requiredProperties": [
+        "@type",
+        "mainEntity"
+      ],
+      "propertyDetails": {
+        "mainEntity": {
+          "type": "Question array",
+          "description": "Array of Question items, each with an acceptedAnswer."
+        }
+      },
+      "questionSchema": {
+        "@type": "Question",
+        "requiredProperties": ["name", "acceptedAnswer"],
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "requiredProperties": ["text"]
+        }
+      },
+      "example": {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is pour-over coffee?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Pour-over coffee is a manual brewing method where hot water is poured over ground coffee in a filter, allowing the water to drip through into a cup or carafe below."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long does pour-over coffee take?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A typical pour-over brew takes 3-4 minutes, not including the time to heat water and grind beans."
+            }
+          }
+        ]
+      },
+      "url": "https://developers.google.com/search/docs/appearance/structured-data/faqpage",
+      "testUrl": "https://search.google.com/test/rich-results"
+    },
+    "BreadcrumbList": {
+      "type": "BreadcrumbList",
+      "summary": "Schema for site navigation breadcrumbs. Displays page hierarchy in search results.",
+      "keywords": ["breadcrumb", "navigation", "path", "パンくず", "ナビゲーション"],
+      "requiredProperties": [
+        "@type",
+        "itemListElement"
+      ],
+      "propertyDetails": {
+        "itemListElement": {
+          "type": "ListItem array",
+          "description": "Ordered list of breadcrumb items from root to current page."
+        }
+      },
+      "listItemSchema": {
+        "@type": "ListItem",
+        "requiredProperties": ["position", "name"],
+        "recommendedProperties": ["item"]
+      },
+      "example": {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://example.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Coffee",
+            "item": "https://example.com/coffee"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Pour-Over",
+            "item": "https://example.com/coffee/pour-over"
+          }
+        ]
+      },
+      "url": "https://developers.google.com/search/docs/appearance/structured-data/breadcrumb",
+      "testUrl": "https://search.google.com/test/rich-results"
+    },
+    "WebPage": {
+      "type": "WebPage",
+      "summary": "General schema for any web page. Often used as a container for other schemas.",
+      "keywords": ["webpage", "page", "ウェブページ", "ページ"],
+      "subtypes": ["AboutPage", "ContactPage", "FAQPage", "ProfilePage"],
+      "requiredProperties": [
+        "@type"
+      ],
+      "recommendedProperties": [
+        "name",
+        "description",
+        "url",
+        "mainEntity",
+        "breadcrumb"
+      ],
+      "example": {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "About Our Coffee",
+        "description": "Learn about our coffee sourcing and roasting process.",
+        "url": "https://example.com/about"
+      },
+      "url": "https://schema.org/WebPage",
+      "testUrl": "https://search.google.com/test/rich-results"
+    },
+    "HowTo": {
+      "type": "HowTo",
+      "summary": "Schema for how-to content with step-by-step instructions. Can show as rich results with steps.",
+      "keywords": ["howto", "how to", "tutorial", "guide", "手順", "ガイド", "やり方"],
+      "requiredProperties": [
+        "@type",
+        "name",
+        "step"
+      ],
+      "recommendedProperties": [
+        "image",
+        "totalTime",
+        "estimatedCost",
+        "supply",
+        "tool"
+      ],
+      "propertyDetails": {
+        "step": {
+          "type": "HowToStep array",
+          "description": "Ordered list of steps to complete the task."
+        },
+        "totalTime": {
+          "type": "Duration",
+          "description": "Total time required in ISO 8601 duration format (e.g., PT30M)."
+        }
+      },
+      "example": {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to Make Pour-Over Coffee",
+        "description": "Make perfect pour-over coffee with these simple steps.",
+        "totalTime": "PT10M",
+        "tool": [
+          {
+            "@type": "HowToTool",
+            "name": "Pour-over dripper"
+          },
+          {
+            "@type": "HowToTool",
+            "name": "Kettle"
+          }
+        ],
+        "supply": [
+          {
+            "@type": "HowToSupply",
+            "name": "Coffee beans (20g)"
+          },
+          {
+            "@type": "HowToSupply",
+            "name": "Hot water (300ml)"
+          }
+        ],
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Grind the beans",
+            "text": "Grind 20g of coffee beans to a medium-fine consistency."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Rinse the filter",
+            "text": "Place the filter in the dripper and rinse with hot water."
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Bloom the coffee",
+            "text": "Add grounds and pour 40ml of water. Wait 30 seconds."
+          }
+        ]
+      },
+      "url": "https://developers.google.com/search/docs/appearance/structured-data/how-to",
+      "testUrl": "https://search.google.com/test/rich-results"
+    },
+    "Event": {
+      "type": "Event",
+      "summary": "Schema for events. Enables event listings in Google Search and Maps.",
+      "keywords": ["event", "conference", "concert", "workshop", "イベント", "セミナー", "カンファレンス"],
+      "requiredProperties": [
+        "@type",
+        "name",
+        "startDate",
+        "location"
+      ],
+      "recommendedProperties": [
+        "endDate",
+        "description",
+        "image",
+        "offers",
+        "performer",
+        "organizer",
+        "eventStatus",
+        "eventAttendanceMode"
+      ],
+      "eventStatusValues": {
+        "EventScheduled": "Event is scheduled as planned",
+        "EventCancelled": "Event has been cancelled",
+        "EventPostponed": "Event has been postponed",
+        "EventRescheduled": "Event has been rescheduled"
+      },
+      "attendanceModeValues": {
+        "OfflineEventAttendanceMode": "In-person event",
+        "OnlineEventAttendanceMode": "Virtual/online event",
+        "MixedEventAttendanceMode": "Hybrid event"
+      },
+      "example": {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "Tokyo Coffee Festival 2024",
+        "startDate": "2024-05-01T10:00:00+09:00",
+        "endDate": "2024-05-01T18:00:00+09:00",
+        "eventStatus": "https://schema.org/EventScheduled",
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "location": {
+          "@type": "Place",
+          "name": "Tokyo Big Sight",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "3-11-1 Ariake",
+            "addressLocality": "Koto-ku",
+            "addressRegion": "Tokyo",
+            "postalCode": "135-0063",
+            "addressCountry": "JP"
+          }
+        },
+        "image": "https://example.com/coffee-fest.jpg",
+        "description": "Annual coffee festival featuring roasters from around the world.",
+        "offers": {
+          "@type": "Offer",
+          "price": "1500",
+          "priceCurrency": "JPY",
+          "availability": "https://schema.org/InStock",
+          "validFrom": "2024-03-01T00:00:00+09:00"
+        }
+      },
+      "url": "https://developers.google.com/search/docs/appearance/structured-data/event",
+      "testUrl": "https://search.google.com/test/rich-results"
+    },
+    "Review": {
+      "type": "Review",
+      "summary": "Schema for product or service reviews with ratings.",
+      "keywords": ["review", "rating", "レビュー", "評価", "口コミ"],
+      "requiredProperties": [
+        "@type",
+        "itemReviewed",
+        "author"
+      ],
+      "recommendedProperties": [
+        "reviewRating",
+        "datePublished",
+        "reviewBody"
+      ],
+      "propertyDetails": {
+        "reviewRating": {
+          "type": "Rating",
+          "description": "The rating given in the review.",
+          "properties": ["ratingValue", "bestRating", "worstRating"]
+        }
+      },
+      "example": {
+        "@context": "https://schema.org",
+        "@type": "Review",
+        "itemReviewed": {
+          "@type": "Product",
+          "name": "Premium Coffee Grinder"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Coffee Lover"
+        },
+        "reviewRating": {
+          "@type": "Rating",
+          "ratingValue": "4.5",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "datePublished": "2024-01-10",
+        "reviewBody": "Excellent grinder with consistent results. The burr mechanism produces uniform grounds every time."
+      },
+      "url": "https://developers.google.com/search/docs/appearance/structured-data/review-snippet",
+      "testUrl": "https://search.google.com/test/rich-results"
+    },
+    "VideoObject": {
+      "type": "VideoObject",
+      "summary": "Schema for video content. Enables video rich results and video previews in search.",
+      "keywords": ["video", "動画", "ビデオ", "YouTube"],
+      "requiredProperties": [
+        "@type",
+        "name",
+        "thumbnailUrl",
+        "uploadDate"
+      ],
+      "recommendedProperties": [
+        "description",
+        "duration",
+        "contentUrl",
+        "embedUrl",
+        "interactionStatistic"
+      ],
+      "example": {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "How to Make Pour-Over Coffee",
+        "description": "Learn the art of pour-over coffee with this step-by-step guide.",
+        "thumbnailUrl": "https://example.com/video-thumb.jpg",
+        "uploadDate": "2024-01-15T08:00:00+09:00",
+        "duration": "PT5M30S",
+        "contentUrl": "https://example.com/videos/pour-over.mp4",
+        "embedUrl": "https://example.com/embed/pour-over"
+      },
+      "url": "https://developers.google.com/search/docs/appearance/structured-data/video",
+      "testUrl": "https://search.google.com/test/rich-results"
+    }
+  }
+}

@@ -12,7 +12,7 @@ This is a **Claude Code plugin marketplace** that provides SEO and WCAG 2.1 AA a
 seo-claude-plugins/
 ├── .claude-plugin/                # Marketplace and plugin configuration
 │   ├── marketplace.json           # Marketplace manifest
-│   └── plugin.json                # Plugin manifest (v2.3.0)
+│   └── plugin.json                # Plugin manifest (v3.0.0)
 ├── skills/
 │   ├── seo-a11y-analyzer/        # Core analysis skill (5-step workflow)
 │   ├── wcag-aria-lookup/         # Lookup-based WCAG/ARIA reference
@@ -26,17 +26,35 @@ seo-claude-plugins/
 │   │   │   └── run-markuplint.sh # Standalone markuplint
 │   │   └── configs/
 │   │       └── markuplintrc.json # JSX/TSX parser config
-│   └── a11y-self-check/          # Proactive self-validation for Claude Code
-│       └── SKILL.md
+│   ├── a11y-self-check/          # Proactive self-validation for Claude Code
+│   │   └── SKILL.md
+│   ├── seo-lookup/               # SEO reference lookup (NEW in v3.0)
+│   │   ├── SKILL.md
+│   │   ├── seo-index.json        # Meta tags, OG, Twitter Card reference
+│   │   └── structured-data-index.json  # JSON-LD schema reference
+│   ├── seo-analyzer/             # Static SEO analysis (NEW in v3.0)
+│   │   ├── SKILL.md
+│   │   ├── package.json          # cheerio dependency
+│   │   └── scripts/
+│   │       ├── analyze-seo.js    # Static SEO checks
+│   │       ├── keyword-analyzer.js
+│   │       └── run-seo-analyzer.sh
+│   └── lighthouse-runner/        # Lighthouse integration (NEW in v3.0)
+│       ├── SKILL.md
+│       ├── package.json          # puppeteer, lighthouse dependency
+│       └── scripts/
+│           ├── run-lighthouse.js
+│           └── run-lighthouse.sh
 ├── commands/
-│   └── a11y-audit.md             # /a11y-audit command (suggestion-only)
+│   ├── a11y-audit.md             # /a11y-audit command
+│   └── seo-audit.md              # /seo-audit command (NEW in v3.0)
 ├── agents/
 │   └── a11y-fixer.md             # Subagent for analysis (read-only)
 ├── test/fixtures/                # Test HTML files with intentional issues
 └── plans/                        # Development planning docs
 ```
 
-## The Four Skills
+## The Seven Skills
 
 ### 1. seo-a11y-analyzer
 Workflow-based analysis skill with 5-step process:
@@ -83,7 +101,63 @@ Proactive self-validation skill for Claude Code to validate its own generated HT
 - Writing forms, modals, navigation
 - Modifying existing templates
 
-## Command & Agent
+### 5. seo-lookup (NEW in v3.0)
+Lookup-based reference skill for SEO best practices, similar to wcag-aria-lookup.
+
+**Index coverage**:
+- Meta tags: title, description, canonical, robots, viewport
+- Open Graph: og:title, og:description, og:image, og:url, og:type
+- Twitter Cards: twitter:card, twitter:title, twitter:description, twitter:image
+- Structured Data: Article, Product, FAQPage, LocalBusiness, BreadcrumbList, etc.
+
+**Triggers**: "og:image size", "meta description length", "Article schema", "JSON-LD"
+
+**Usage**:
+```bash
+# Look up og:image requirements
+cat skills/seo-lookup/seo-index.json | jq '.["og-tags"]["og:image"]'
+
+# Look up Article schema
+cat skills/seo-lookup/structured-data-index.json | jq '.schemas.Article'
+```
+
+### 6. seo-analyzer (NEW in v3.0)
+Static SEO analysis using cheerio for HTML parsing.
+
+**Checks**:
+- Critical: title, description, H1, canonical
+- Important: robots, viewport, heading hierarchy, lang
+- Recommended: OG tags, Twitter Cards, JSON-LD
+
+**Usage**:
+```bash
+bash skills/seo-analyzer/scripts/run-seo-analyzer.sh path/to/file.html
+bash skills/seo-analyzer/scripts/run-seo-analyzer.sh path/to/file.html --json
+bash skills/seo-analyzer/scripts/run-seo-analyzer.sh path/to/file.html --keywords
+```
+
+### 7. lighthouse-runner (NEW in v3.0)
+Lighthouse integration via Puppeteer for comprehensive web quality audits.
+
+**Scores**:
+- Performance (Core Web Vitals: LCP, FID, CLS)
+- SEO
+- Accessibility
+- Best Practices
+
+**Usage**:
+```bash
+# URL analysis
+bash skills/lighthouse-runner/scripts/run-lighthouse.sh https://example.com
+
+# Local file (auto-starts server)
+bash skills/lighthouse-runner/scripts/run-lighthouse.sh path/to/file.html
+
+# Development server (Next.js/Remix)
+bash skills/lighthouse-runner/scripts/run-lighthouse.sh http://localhost:3000
+```
+
+## Commands
 
 ### /a11y-audit Command
 Runs accessibility audit on specified files and provides fix **suggestions** (does NOT modify files).
@@ -92,6 +166,17 @@ Runs accessibility audit on specified files and provides fix **suggestions** (do
 /a11y-audit path/to/file.html
 /a11y-audit "src/**/*.tsx"
 ```
+
+### /seo-audit Command (NEW in v3.0)
+Comprehensive SEO audit combining static analysis and Lighthouse.
+
+```bash
+/seo-audit path/to/file.html           # Full audit (static + lighthouse)
+/seo-audit http://localhost:3000       # Lighthouse only (for dev server)
+/seo-audit path/to/file.html static    # Static analysis only
+```
+
+## Agent
 
 ### a11y-fixer Agent
 Read-only subagent that:
