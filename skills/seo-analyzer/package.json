@@ -1,0 +1,16 @@
+{
+  "name": "seo-analyzer",
+  "version": "1.0.0",
+  "description": "Static SEO analysis for HTML files using cheerio",
+  "type": "module",
+  "scripts": {
+    "analyze": "node scripts/analyze-seo.js",
+    "keywords": "node scripts/keyword-analyzer.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
