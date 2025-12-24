@@ -4,13 +4,14 @@
   "description": "Automated HTML/JSX/TSX linting with axe-core/playwright and markuplint",
   "type": "module",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "html-lint": "dist/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsdown src/index.ts --format esm --dts",
+    "prepare": "npm run build",
     "start": "node dist/index.js",
-    "dev": "tsx src/index.ts",
     "postinstall": "npx playwright install chromium"
   },
   "engines": {
@@ -25,7 +26,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
-    "tsx": "^4.0.0",
+    "tsdown": "^0.9.0",
     "typescript": "^5.3.0"
   }
 }

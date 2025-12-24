@@ -9,9 +9,9 @@
     "web-resource-checker": "dist/index.js"
   },
   "scripts": {
-    "build": "tsc",
-    "check": "node dist/index.js",
-    "dev": "tsc --watch"
+    "build": "tsdown src/index.ts --format esm --dts",
+    "prepare": "npm run build",
+    "check": "node dist/index.js"
   },
   "dependencies": {
     "xml2js": "^0.6.0"
@@ -19,6 +19,7 @@
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/xml2js": "^0.4.14",
+    "tsdown": "^0.9.0",
     "typescript": "^5.7.0"
   },
   "engines": {
