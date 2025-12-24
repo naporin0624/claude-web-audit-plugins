@@ -4,12 +4,11 @@
   "description": "npm audit / Trivy wrapper for Software Composition Analysis",
   "type": "module",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "bin": {
     "sca-runner": "dist/index.js"
   },
   "scripts": {
-    "build": "tsdown src/index.ts --format esm --dts",
+    "build": "tsdown src/index.ts --format esm",
     "prepare": "npm run build",
     "scan": "node dist/index.js"
   },

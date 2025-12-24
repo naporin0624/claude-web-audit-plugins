@@ -4,12 +4,11 @@
   "description": "Hadolint / Trivy wrapper for container security scanning",
   "type": "module",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "bin": {
     "container-scanner": "dist/index.js"
   },
   "scripts": {
-    "build": "tsdown src/index.ts --format esm --dts",
+    "build": "tsdown src/index.ts --format esm",
     "prepare": "npm run build",
     "scan": "node dist/index.js"
   },

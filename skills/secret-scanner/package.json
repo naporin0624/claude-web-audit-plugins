@@ -4,12 +4,11 @@
   "description": "Gitleaks wrapper for secret detection in git repositories",
   "type": "module",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "bin": {
     "secret-scanner": "dist/index.js"
   },
   "scripts": {
-    "build": "tsdown src/index.ts --format esm --dts",
+    "build": "tsdown src/index.ts --format esm",
     "prepare": "npm run build",
     "scan": "node dist/index.js"
   },

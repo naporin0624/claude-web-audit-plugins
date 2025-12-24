@@ -4,12 +4,11 @@
   "description": "tfsec / Checkov wrapper for Infrastructure as Code security scanning",
   "type": "module",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "bin": {
     "iac-scanner": "dist/index.js"
   },
   "scripts": {
-    "build": "tsdown src/index.ts --format esm --dts",
+    "build": "tsdown src/index.ts --format esm",
     "prepare": "npm run build",
     "scan": "node dist/index.js"
   },
