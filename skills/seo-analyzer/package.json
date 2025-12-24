@@ -1,14 +1,25 @@
 {
   "name": "seo-analyzer",
-  "version": "1.0.0",
-  "description": "Static SEO analysis for HTML files using cheerio",
+  "version": "2.0.0",
+  "description": "Static SEO and Keyword analysis for HTML files using cheerio",
   "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "seo-analyzer": "dist/index.js"
+  },
   "scripts": {
-    "analyze": "node scripts/analyze-seo.js",
-    "keywords": "node scripts/keyword-analyzer.js"
+    "build": "tsdown src/index.ts --format esm --dts",
+    "prepare": "npm run build",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "cheerio": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsdown": "^0.9.0",
+    "typescript": "^5.3.0"
   },
   "engines": {
     "node": ">=18.0.0"

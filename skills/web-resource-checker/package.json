@@ -1,13 +1,26 @@
 {
   "name": "web-resource-checker",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Validates essential web resource files (sitemap.xml, robots.txt, llms.txt, security.txt)",
   "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "web-resource-checker": "dist/index.js"
+  },
   "scripts": {
-    "check": "node scripts/analyze-web-resources.js"
+    "build": "tsdown src/index.ts --format esm --dts",
+    "prepare": "npm run build",
+    "check": "node dist/index.js"
   },
   "dependencies": {
     "xml2js": "^0.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/xml2js": "^0.4.14",
+    "tsdown": "^0.9.0",
+    "typescript": "^5.7.0"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -39,16 +39,19 @@ Validates essential web resource files for SEO, security, and LLM accessibility 
 
 ```bash
 # Check local directory
-bash ${CLAUDE_PLUGIN_ROOT}/skills/web-resource-checker/scripts/run-resource-check.sh ./public
+cd ${CLAUDE_PLUGIN_ROOT}/skills/web-resource-checker && npx web-resource-checker ./public
 
 # Check live site
-bash ${CLAUDE_PLUGIN_ROOT}/skills/web-resource-checker/scripts/run-resource-check.sh https://example.com
+cd ${CLAUDE_PLUGIN_ROOT}/skills/web-resource-checker && npx web-resource-checker https://example.com
 
 # JSON output
-bash ${CLAUDE_PLUGIN_ROOT}/skills/web-resource-checker/scripts/run-resource-check.sh https://example.com --json
+cd ${CLAUDE_PLUGIN_ROOT}/skills/web-resource-checker && npx web-resource-checker https://example.com --json
 
 # Check specific files only
-bash ${CLAUDE_PLUGIN_ROOT}/skills/web-resource-checker/scripts/run-resource-check.sh https://example.com --only=sitemap,robots
+cd ${CLAUDE_PLUGIN_ROOT}/skills/web-resource-checker && npx web-resource-checker https://example.com --only=sitemap,robots
+
+# With custom timeout (in milliseconds)
+cd ${CLAUDE_PLUGIN_ROOT}/skills/web-resource-checker && npx web-resource-checker https://example.com --timeout=30000
 ```
 
 ### Lookup Specifications
