@@ -1,11 +1,16 @@
 {
   "name": "form-security-analyzer",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Static security analysis of HTML forms",
   "type": "module",
-  "main": "scripts/analyze-form.js",
+  "main": "dist/index.js",
+  "bin": {
+    "form-security-analyzer": "dist/index.js"
+  },
   "scripts": {
-    "analyze": "node scripts/analyze-form.js"
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts"
   },
   "keywords": [
     "security",
@@ -14,10 +19,15 @@
     "xss",
     "static-analysis"
   ],
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.3.0"
+  },
   "engines": {
     "node": ">=18.0.0"
-  },
-  "dependencies": {
-    "cheerio": "^1.0.0-rc.12"
   }
 }

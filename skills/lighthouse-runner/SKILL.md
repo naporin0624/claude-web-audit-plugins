@@ -1,11 +1,11 @@
 ---
 name: lighthouse-runner
-description: Runs Google Lighthouse audits using Puppeteer for SEO, Performance, Accessibility, and Best Practices scoring. Supports both URLs and local HTML files. Use when user mentions "Lighthouse", "page speed", "performance audit", "Core Web Vitals", "CWV", or needs comprehensive web performance analysis.
+description: Runs Google Lighthouse audits using Playwright for SEO, Performance, Accessibility, and Best Practices scoring. Supports both URLs and local HTML files. Use when user mentions "Lighthouse", "page speed", "performance audit", "Core Web Vitals", "CWV", or needs comprehensive web performance analysis.
 ---
 
 # Lighthouse Runner
 
-Runs Google Lighthouse audits via Puppeteer for comprehensive web quality assessment including SEO, Performance, Accessibility, and Best Practices.
+Runs Google Lighthouse audits via Playwright for comprehensive web quality assessment including SEO, Performance, Accessibility, and Best Practices.
 
 ## Features
 
@@ -14,36 +14,42 @@ Runs Google Lighthouse audits via Puppeteer for comprehensive web quality assess
 - **Multiple Categories**: SEO, Performance, Accessibility, Best Practices
 - **JSON Output**: Machine-readable results for integration
 - **Core Web Vitals**: LCP, FID, CLS metrics
+- **Cross-Platform**: Works on Windows, macOS, and Linux (no Bash required)
 
 ## Usage
+
+### Installation
+
+```bash
+cd ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner
+npm install
+npm run build
+```
 
 ### Run Analysis
 
 ```bash
 # Analyze a URL
-bash ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/scripts/run-lighthouse.sh https://example.com
+npx tsx ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/src/index.ts https://example.com
 
-# Analyze a local HTML file
-bash ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/scripts/run-lighthouse.sh path/to/file.html
+# Analyze a local HTML file (auto-starts local server)
+npx tsx ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/src/index.ts path/to/file.html
 
 # Analyze a development server
-bash ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/scripts/run-lighthouse.sh http://localhost:3000
+npx tsx ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/src/index.ts http://localhost:3000
 
 # Output JSON format
-bash ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/scripts/run-lighthouse.sh https://example.com --json
+npx tsx ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/src/index.ts https://example.com --json
 
 # Specify categories
-bash ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/scripts/run-lighthouse.sh https://example.com --categories=seo,accessibility
+npx tsx ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/src/index.ts https://example.com --categories=seo,accessibility
 ```
 
-### Direct Node.js Usage
+### Using Built Version
 
 ```bash
-# Install dependencies first
-cd ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner && npm install
-
-# Run with Node.js
-node ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/scripts/run-lighthouse.js https://example.com
+# After npm run build
+node ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/dist/index.js https://example.com
 ```
 
 ## Output Scores
@@ -71,24 +77,28 @@ node ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/scripts/run-lighthouse.js ht
 # Lighthouse Report: https://example.com
 
 ## Scores
-- Performance:   85/100 ⬛⬛⬛⬛⬛⬛⬛⬛⬜⬜
-- SEO:           95/100 ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬜
-- Accessibility: 78/100 ⬛⬛⬛⬛⬛⬛⬛⬜⬜⬜
-- Best Practices: 92/100 ⬛⬛⬛⬛⬛⬛⬛⬛⬛⬜
+- Performance:   85/100 [########--]
+- SEO:           95/100 [#########-]
+- Accessibility: 78/100 [#######---]
+- Best Practices: 92/100 [#########-]
 
 ## Core Web Vitals
-- LCP (Largest Contentful Paint): 2.1s ✓
-- FID (First Input Delay): 45ms ✓
-- CLS (Cumulative Layout Shift): 0.05 ✓
+- LCP: 2.1s [GOOD]
+- FID: 45ms [GOOD]
+- CLS: 0.050 [GOOD]
 
-## Top Issues
+## Additional Metrics
+- TTFB: 320ms
+- Speed Index: 3.2s
+- FCP: 1.8s
+- TBT: 120ms
 
-### Performance
-1. Eliminate render-blocking resources
-2. Serve images in next-gen formats
+## Performance Issues
 
-### SEO
-1. Document doesn't have a meta description
+1. **Eliminate render-blocking resources** (45%)
+   3 resources blocking first paint
+2. **Serve images in next-gen formats** (60%)
+   Use WebP or AVIF
 ```
 
 ### JSON Output
@@ -97,6 +107,7 @@ node ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/scripts/run-lighthouse.js ht
 {
   "url": "https://example.com",
   "timestamp": "2024-01-15T10:00:00Z",
+  "lighthouseVersion": "12.0.0",
   "scores": {
     "performance": 85,
     "seo": 95,
@@ -108,7 +119,9 @@ node ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/scripts/run-lighthouse.js ht
     "fid": 45,
     "cls": 0.05,
     "ttfb": 320,
-    "speedIndex": 3200
+    "speedIndex": 3200,
+    "fcp": 1800,
+    "tbt": 120
   },
   "audits": {
     "performance": [...],
@@ -142,11 +155,11 @@ For JavaScript frameworks, analyze the running development or production server:
 npm run dev  # Starts at http://localhost:3000
 
 # Then run Lighthouse against it
-bash run-lighthouse.sh http://localhost:3000
+npx tsx src/index.ts http://localhost:3000
 
 # For production build analysis
 npm run build && npm run start
-bash run-lighthouse.sh http://localhost:3000
+npx tsx src/index.ts http://localhost:3000
 ```
 
 ## Integration with Other Skills
@@ -161,28 +174,27 @@ For comprehensive SEO analysis:
 
 ```bash
 # Run static analysis first (fast)
-bash ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer/scripts/run-seo-analyzer.sh file.html
+npx tsx ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer/src/index.ts file.html
 
 # Then run Lighthouse (slower but comprehensive)
-bash ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/scripts/run-lighthouse.sh http://localhost:3000
+npx tsx ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner/src/index.ts http://localhost:3000
 ```
 
 ## Requirements
 
 - Node.js 18+
-- Chrome/Chromium browser (installed automatically with Puppeteer)
+- Chromium browser (installed automatically via `postinstall`)
 - Sufficient memory for headless Chrome (~500MB)
 
 ## Troubleshooting
 
-### Chrome Not Found
+### Browser Not Found
 
-If Puppeteer can't find Chrome:
+If Playwright can't find Chromium:
 
 ```bash
-# Install Chromium via Puppeteer
 cd ${CLAUDE_PLUGIN_ROOT}/skills/lighthouse-runner
-npx puppeteer browsers install chrome
+npx playwright install chromium
 ```
 
 ### Timeout Issues
@@ -190,7 +202,7 @@ npx puppeteer browsers install chrome
 For slow pages, increase the timeout:
 
 ```bash
-node run-lighthouse.js https://slow-site.com --timeout=120
+npx tsx src/index.ts https://slow-site.com --timeout=120
 ```
 
 ### WSL/Linux Issues
@@ -198,8 +210,8 @@ node run-lighthouse.js https://slow-site.com --timeout=120
 On WSL or headless Linux, you may need additional dependencies:
 
 ```bash
-# Install required libraries
-sudo apt-get install -y libxss1 libatk-bridge2.0-0 libgtk-3-0
+# Install required libraries for Playwright
+npx playwright install-deps chromium
 ```
 
 ## External Resources
@@ -207,3 +219,4 @@ sudo apt-get install -y libxss1 libatk-bridge2.0-0 libgtk-3-0
 - [Lighthouse Documentation](https://developer.chrome.com/docs/lighthouse)
 - [Web Vitals](https://web.dev/vitals/)
 - [PageSpeed Insights](https://pagespeed.web.dev/)
+- [Playwright Documentation](https://playwright.dev/)

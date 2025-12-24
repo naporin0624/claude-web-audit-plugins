@@ -1,11 +1,16 @@
 {
   "name": "playwright-security-runner",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Dynamic security testing of web forms using Playwright",
   "type": "module",
-  "main": "scripts/run-security-test.js",
+  "main": "dist/index.js",
+  "bin": {
+    "security-test": "dist/index.js"
+  },
   "scripts": {
-    "test": "node scripts/run-security-test.js",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
     "postinstall": "npx playwright install chromium"
   },
   "keywords": [
@@ -21,5 +26,10 @@
   },
   "dependencies": {
     "playwright": "^1.40.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.3.0"
   }
 }

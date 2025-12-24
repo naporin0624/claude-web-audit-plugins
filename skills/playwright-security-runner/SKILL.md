@@ -1,13 +1,13 @@
 ---
 name: playwright-security-runner
-description: Dynamic security testing of web forms using Playwright browser automation. Sends actual payloads to test for vulnerabilities. REQUIRES USER CONFIRMATION before execution. Use when user wants to "test payloads", "dynamic security test", "exploit testing", "penetration test forms", "動的テスト", "ペイロードテスト".
+description: Dynamic security testing of web forms using Playwright browser automation. Sends actual payloads to test for vulnerabilities. REQUIRES USER CONFIRMATION before execution. Use when user wants to "test payloads", "dynamic security test", "exploit testing", "penetration test forms".
 ---
 
-# Playwright Security Runner 🎭⚠️
+# Playwright Security Runner
 
 Dynamic security testing with real browser automation. This skill **sends actual payloads** to targets.
 
-## ⚠️ CRITICAL: Safety Protocols
+## CRITICAL: Safety Protocols
 
 **This skill sends real requests. ALWAYS get user confirmation first.**
 
@@ -18,15 +18,14 @@ Dynamic security testing with real browser automation. This skill **sends actual
 
 ### Confirmation Template:
 ```
-🎯 Security Test Plan
+Security Test Plan
 
 Target: http://localhost:3000/login
 Payloads to send:
-1. [XSS] <script>alert(1)</script> → username field
-2. [SQLi] ' OR '1'='1 → password field
-3. [CSRF] Cross-origin form submission
+1. [XSS] <script>alert(1)</script> -> username field
+2. [SQLi] ' OR '1'='1 -> password field
 
-⚠️ This will send real requests to the target.
+This will send real requests to the target.
 Potential bounty: $5,000 - $15,000
 
 Proceed? (yes/no)
@@ -35,21 +34,24 @@ Proceed? (yes/no)
 ## Quick Start
 
 ```bash
+# Install dependencies
+cd ${CLAUDE_PLUGIN_ROOT}/skills/playwright-security-runner && npm install
+
 # Dry run - shows what would be tested (SAFE)
-bash ${CLAUDE_PLUGIN_ROOT}/skills/playwright-security-runner/scripts/run-security-test.sh \
+npm --prefix ${CLAUDE_PLUGIN_ROOT}/skills/playwright-security-runner run dev -- \
   --url "http://localhost:3000/login" \
   --dry-run
 
 # Actually run tests (REQUIRES CONFIRMATION)
-bash ${CLAUDE_PLUGIN_ROOT}/skills/playwright-security-runner/scripts/run-security-test.sh \
+npm --prefix ${CLAUDE_PLUGIN_ROOT}/skills/playwright-security-runner run dev -- \
   --url "http://localhost:3000/login" \
   --test xss,sqli
 
-# Test specific form
-bash ${CLAUDE_PLUGIN_ROOT}/skills/playwright-security-runner/scripts/run-security-test.sh \
-  --url "http://localhost:3000" \
-  --form "#login-form" \
-  --test all
+# Or after building
+npm --prefix ${CLAUDE_PLUGIN_ROOT}/skills/playwright-security-runner run build
+node ${CLAUDE_PLUGIN_ROOT}/skills/playwright-security-runner/dist/index.js \
+  --url "http://localhost:3000/login" \
+  --test xss,sqli
 ```
 
 ## Test Types
@@ -58,10 +60,7 @@ bash ${CLAUDE_PLUGIN_ROOT}/skills/playwright-security-runner/scripts/run-securit
 |------|--------------|----------|
 | `xss` | Cross-site scripting | Script tags, event handlers |
 | `sqli` | SQL injection | Quotes, UNION, comments |
-| `csrf` | Request forgery | Token removal, cross-origin |
 | `auth` | Authentication | Bypass attempts |
-| `idor` | Object references | ID manipulation |
-| `all` | Everything | All of the above |
 
 ## Options
 
@@ -73,12 +72,13 @@ bash ${CLAUDE_PLUGIN_ROOT}/skills/playwright-security-runner/scripts/run-securit
 | `--dry-run` | Show plan without executing |
 | `--screenshot` | Capture screenshots of results |
 | `--json` | Output as JSON |
+| `--headed` | Run with visible browser |
 
 ## Safety Features
 
 ### 1. Production Detection
 ```
-⚠️ WARNING: Production URL Detected
+WARNING: Production URL Detected
 
 The target URL appears to be a production system:
 https://example.com/login
@@ -93,86 +93,31 @@ Ensure you have authorization to test this target.
 
 ### 2. Dry Run Mode
 ```bash
-# See what would happen without actually doing it
-bash run-security-test.sh --url "http://target.com" --dry-run
+npm run dev -- --url "http://target.com" --dry-run
 ```
 
 Output:
 ```
-=== DRY RUN MODE ===
+DRY RUN MODE
 
-Would test: http://target.com/login
-Form found: #login-form
+Target: http://target.com/login
+Form: All forms
+Tests: xss, sqli
 
-Planned payloads:
-1. [XSS] Input: username, Value: <script>alert(1)</script>
-2. [XSS] Input: username, Value: <img src=x onerror=alert(1)>
-3. [SQLi] Input: password, Value: ' OR '1'='1
-4. [SQLi] Input: password, Value: admin'--
+Payloads that would be sent:
 
-No requests sent. Use without --dry-run to execute.
-```
+[XSS] - Bounty: $500 - $10,000
+  1. script-tag: <script>alert(1)</script>...
+  2. img-onerror: <img src=x onerror=alert(1)>...
 
-### 3. Audit Logging
-All actions are logged:
-```json
-{
-  "sessionId": "abc123",
-  "timestamp": "2024-01-15T10:30:00Z",
-  "target": "http://localhost:3000/login",
-  "action": "send_payload",
-  "payload": "<script>alert(1)</script>",
-  "field": "username",
-  "response": { "status": 200, "reflected": true }
-}
-```
-
-## Test Scenarios
-
-### XSS Testing
-```javascript
-const xssPayloads = [
-  "<script>alert(document.domain)</script>",
-  "<img src=x onerror=alert(1)>",
-  "<svg onload=alert(1)>",
-  "javascript:alert(1)",
-  "'><script>alert(1)</script>"
-];
-
-// Test each input field with each payload
-// Check if payload is reflected in response
-```
-
-### SQL Injection Testing
-```javascript
-const sqliPayloads = [
-  "' OR '1'='1",
-  "' OR '1'='1'--",
-  "'; DROP TABLE users--",
-  "1 UNION SELECT NULL,NULL--"
-];
-
-// Test login forms, search forms
-// Check for error messages, auth bypass
-```
-
-### CSRF Testing
-```javascript
-// 1. Get form without CSRF token
-// 2. Submit from different origin
-// 3. Check if action succeeds
-
-// Or:
-// 1. Get valid CSRF token
-// 2. Reuse in different session
-// 3. Check if still valid
+No requests sent. Remove --dry-run to execute tests.
 ```
 
 ## Output Format
 
 ### Vulnerability Found
 ```markdown
-## 🔴 VULNERABILITY FOUND
+## VULNERABILITY FOUND
 
 **Type**: Reflected XSS
 **Severity**: HIGH
@@ -183,73 +128,26 @@ const sqliPayloads = [
 **Payload**: <script>alert(1)</script>
 
 **Evidence**:
-- Payload reflected in response HTML
-- No encoding applied
-- Script tag intact
+- Payload reflected in response without encoding
+- Alert dialog triggered
 
 **Screenshot**: ./screenshots/xss-001.png
-
-**Reproduction**:
-1. Navigate to http://localhost:3000/search
-2. Enter `<script>alert(1)</script>` in search field
-3. Submit form
-4. Observe alert dialog
-
-**Recommendation**:
-Apply HTML entity encoding to all user input before rendering.
-```
-
-### No Vulnerability
-```markdown
-## ✅ Test Passed
-
-**Type**: SQL Injection
-**Target**: http://localhost:3000/login
-
-**Payloads Tested**: 12
-**Result**: No SQL errors detected
-
-The application appears to properly sanitize input
-or use parameterized queries.
 ```
 
 ## Integration Workflow
 
-1. **Static Analysis First**
-   ```bash
-   # Safe - no requests
-   bash analyze-form.sh target.html
-   ```
-
-2. **Review Findings**
-   - Identify high-value targets
-   - Plan attack vectors
-
-3. **Dry Run**
-   ```bash
-   # Still safe - just planning
-   bash run-security-test.sh --url "..." --dry-run
-   ```
-
-4. **Get Confirmation**
-   - Show payload list to user
-   - Confirm authorization
-
-5. **Execute Tests**
-   ```bash
-   # Now we're sending payloads
-   bash run-security-test.sh --url "..." --test xss,sqli
-   ```
-
-6. **Document Findings**
-   - Screenshots as evidence
-   - Detailed reproduction steps
+1. **Static Analysis First** (safe - no requests)
+2. **Review Findings** - Identify high-value targets
+3. **Dry Run** - Still safe, just planning
+4. **Get Confirmation** - Show payload list to user
+5. **Execute Tests** - Now sending payloads
+6. **Document Findings** - Screenshots as evidence
 
 ## Important Notes
 
 - **localhost/staging only**: Prefer testing against development environments
 - **Authorization required**: Ensure you have permission to test
-- **Rate limiting**: Built-in delays between requests
+- **Rate limiting**: Built-in delays between requests (200ms)
 - **Evidence collection**: Screenshots and logs for bug reports
 
 ## External Resources

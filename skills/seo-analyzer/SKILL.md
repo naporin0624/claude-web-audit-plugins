@@ -5,7 +5,7 @@ description: Analyzes HTML files for SEO issues using static analysis with cheer
 
 # SEO Analyzer
 
-Static SEO analysis for HTML files using cheerio-based parsing. Validates meta tags, social media tags, heading structure, and structured data.
+Static SEO analysis for HTML files using cheerio-based parsing. Validates meta tags, social media tags, heading structure, and structured data. Also includes keyword analysis for content optimization.
 
 ## Analysis Workflow
 
@@ -29,24 +29,38 @@ Static SEO analysis for HTML files using cheerio-based parsing. Validates meta t
 
 ## Usage
 
-### Run Analysis Script
+### Installation
 
 ```bash
-# Analyze a single HTML file
-bash ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer/scripts/run-seo-analyzer.sh path/to/file.html
-
-# Output JSON format
-bash ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer/scripts/run-seo-analyzer.sh path/to/file.html --json
+cd ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer
+npm install
+npm run build
 ```
 
-### Direct Node.js Usage
+### Run Analysis
 
 ```bash
-# Install dependencies first
-cd ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer && npm install
+# SEO analysis (default)
+npx tsx ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer/src/index.ts path/to/file.html
 
-# Run analyzer
-node ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer/scripts/analyze-seo.js path/to/file.html
+# SEO analysis with JSON output
+npx tsx ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer/src/index.ts path/to/file.html --json
+
+# Keyword analysis
+npx tsx ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer/src/index.ts path/to/file.html --keywords
+
+# Both SEO and Keyword analysis
+npx tsx ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer/src/index.ts path/to/file.html --both
+
+# Combined with JSON output
+npx tsx ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer/src/index.ts path/to/file.html --both --json
+```
+
+### Using Built Version
+
+```bash
+# After npm run build
+node ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer/dist/index.js path/to/file.html
 ```
 
 ## Check Items
@@ -90,12 +104,12 @@ node ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer/scripts/analyze-seo.js path/to/fi
 - Critical: 1
 - Important: 2
 - Recommended: 3
+- Passed: 8
 
 ## Critical Issues (P0)
 
 ### 1. Missing Meta Description
-**Problem**: No meta description found
-**Impact**: Poor click-through rate in search results
+**Check**: meta-description
 **Fix**: Add <meta name="description" content="Your description here">
 
 ## Important Issues (P1)
@@ -108,6 +122,7 @@ node ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer/scripts/analyze-seo.js path/to/fi
 {
   "file": "index.html",
   "timestamp": "2024-01-15T10:00:00Z",
+  "confidence": 100,
   "summary": {
     "critical": 1,
     "important": 2,
@@ -128,7 +143,8 @@ node ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer/scripts/analyze-seo.js path/to/fi
       "value": "Page Title - Brand",
       "length": 18
     }
-  ]
+  ],
+  "warnings": []
 }
 ```
 
@@ -144,26 +160,42 @@ The analyzer detects client-side rendered applications and adjusts confidence:
 
 When detected, a warning is added that static analysis may not reflect the rendered page.
 
-### Framework-Specific Patterns
-
-For JSX/TSX files, the analyzer looks for:
-
-- `next/head` imports (Next.js)
-- `Helmet` component (React Helmet)
-- `meta` function exports (Remix)
-
 ## Keyword Analysis
 
-Optional keyword analysis using `keyword-analyzer.js`:
+The keyword analyzer extracts and scores keywords:
 
 ```bash
-node ${CLAUDE_PLUGIN_ROOT}/skills/seo-analyzer/scripts/keyword-analyzer.js file.html
+npx tsx src/index.ts file.html --keywords
 ```
 
 Outputs:
-- Primary keywords detected
-- Keyword placement (title, h1, description)
+- Primary keywords by score
+- Key phrases (2-word combinations)
 - Keyword density
+- Placement analysis (title, H1, description)
+- Recommendations for improvement
+
+### Keyword Report Example
+
+```
+# Keyword Analysis: index.html
+
+## Stats
+- Total words: 1245
+- Unique words: 342
+
+## Primary Keywords (by score)
+
+| Keyword | Score | Freq | Title | H1 | Description |
+|---------|-------|------|-------|----|-----------:|
+| product | 28 | 15 | Y | Y | Y |
+| service | 21 | 12 | Y |   | Y |
+...
+
+## Recommendations
+
+- Consider adding "product management" to your title tag
+```
 
 ## Integration with Lookup
 
