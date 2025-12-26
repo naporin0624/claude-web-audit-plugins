@@ -1,7 +1,7 @@
 {
   "name": "web-audit-tools",
-  "version": "3.3.0",
-  "description": "Comprehensive SEO, WCAG 2.1 AA accessibility, web resource analysis, DevSecOps security testing, and bounty hunter agents",
+  "version": "3.4.0",
+  "description": "Comprehensive SEO, WCAG 2.1 AA accessibility, web resource analysis, DevSecOps security testing, path discovery, CVE hunting, and bounty hunter agents",
   "author": {
     "name": "naporin0624"
   },
@@ -52,6 +52,7 @@
     "./skills/seo-analyzer",
     "./skills/lighthouse-runner",
     "./skills/web-resource-checker",
+    "./skills/path-scanner",
     "./skills/attack-methods-lookup",
     "./skills/cve-search",
     "./skills/form-security-analyzer",
@@ -76,6 +77,7 @@
     "./agents/sqli-hunter.md",
     "./agents/csrf-hunter.md",
     "./agents/idor-hunter.md",
+    "./agents/cve-hunter.md",
     "./agents/gitleaks-agent.md",
     "./agents/semgrep-agent.md",
     "./agents/trivy-agent.md",
